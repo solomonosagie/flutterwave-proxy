@@ -1,15 +1,12 @@
-// proxy-server/index.ts
-// Flutterwave Transfer API Proxy Server
-// Routes requests from Supabase Edge Functions to Flutterwave API
-// This allows IP whitelisting since proxy has static IP
-
-import { serve } from "https://deno.land/std@0.177.0/http/server.ts";
+// proxy-server/index-denodeploy.ts
+// Flutterwave Transfer API Proxy Server - Deno Deploy Compatible Version
+// Uses Deno.serve() which is the modern API for Deno Deploy
 
 const FLW_SECRET = Deno.env.get("FLUTTERWAVE_SECRET_KEY");
 const PROXY_AUTH_TOKEN = Deno.env.get("PROXY_AUTH_TOKEN"); // Secret token for authentication
 const ALLOWED_ORIGINS = Deno.env.get("ALLOWED_ORIGINS")?.split(",") || ["*"];
 
-serve(async (req) => {
+Deno.serve(async (req) => {
   // Handle CORS preflight
   if (req.method === "OPTIONS") {
     const origin = req.headers.get("Origin") || "*";
@@ -24,13 +21,6 @@ serve(async (req) => {
         "Access-Control-Allow-Headers": "Content-Type, Authorization",
         "Access-Control-Max-Age": "86400",
       },
-    });
-  }
-
-    // Handle health check for Deno Deploy warm-up
-  if (req.method === "GET") {    return new Response(JSON.stringify({ status: "ok" }), {
-      status: 200,
-      headers: { "Content-Type": "application/json" },
     });
   }
 
