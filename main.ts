@@ -27,6 +27,14 @@ serve(async (req) => {
     });
   }
 
+    // Handle health check for Deno Deploy warm-up
+  if (req.method === "GET" && req.url === "/") {
+    return new Response(JSON.stringify({ status: "ok" }), {
+      status: 200,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
+
   // Only allow POST
   if (req.method !== "POST") {
     return new Response(JSON.stringify({ error: "Method not allowed" }), {
