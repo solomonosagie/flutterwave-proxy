@@ -28,8 +28,7 @@ serve(async (req) => {
   }
 
     // Handle health check for Deno Deploy warm-up
-  if (req.method === "GET" && req.url === "/") {
-    return new Response(JSON.stringify({ status: "ok" }), {
+  if (req.method === "GET") {    return new Response(JSON.stringify({ status: "ok" }), {
       status: 200,
       headers: { "Content-Type": "application/json" },
     });
